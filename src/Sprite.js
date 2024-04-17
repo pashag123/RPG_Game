@@ -12,7 +12,7 @@ export class Sprite {
     }) {
         this.resource = resource;
 
-        this.frameSize = frameSize ?? new Vector2(16,16);
+        this.frameSize = frameSize ?? new Vector2(16, 16);
 
         this.hFrames = hFrames ?? 1;
 
@@ -42,22 +42,36 @@ export class Sprite {
             }
         }
     }
-drawImage(ctx, x, y) {
-    if (!this.resource.isLoaded) {
-        return;
+    drawImage(ctx, x, y) {
+        if (!this.resource.isLoaded) {
+            return;
+        }
+// find the correct sprite sheet frame to use
+        let frameCoordX = 0;
+        let frameCoordY = 0;
+        const frame = this.frameMap.get(this.frame);
+        if (frame) {
+            frameCoordX = frame.x;
+            frameCoordY = frame.y;
+        }
+
+        const frameSizeX = this.frameSize.x;
+        const frameSizeY = this.frameSize.y;
+
+        ctx.drawImage(
+            this.resource.image,
+            frameCoordX,
+            frameCoordY, // Top Y corner of frame 
+            frameSizeX, // How much to crop from the sprite sheet (x)
+            frameSizeY, //  How much to crop from the sprite sheet (y)
+            x, // where to place this on canvas tag X (0)
+            y, // where to place this on canvas tag Y (0)
+            frameSizeX * this.scale, // How large to scale it (X)
+            frameSizeY * this.scale, // How large to scale it (Y)
+
+        );
+
+
     }
-
-let frameCoordX = 0;
-let frameCoordY = 0;
-const frame = this.frameMap.get(this.frame);
-if (frame) {
-    frameCoordX = frame.x;
-    frameCoordY = frame.y;
-}
-
-
-
-
-}
 }
 
