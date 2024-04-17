@@ -24,14 +24,25 @@ const skySprite = new Sprite({
     frame: 1
    })
 
-const heroPos = new Vector2(16 * 5, 16 * 5);
+const shadow = new Sprite ({
+    resource: resources.images.shadow,
+    frameSize: new Vector2(32, 32)
+})
+
+
+const heroPos = new Vector2(16 * 6, 16 * 5);
 
 const draw = () => {
   skySprite.drawImage(ctx, 0, 0);
   
   groundSprite.drawImage(ctx, 0, 0);
 
-  hero.drawImage(ctx, heroPos.x, heroPos.y);
+//   center the Hero in the cell
+  const heroOffset = new Vector2(-8, -21);
+  const heroPosX = heroPos.x+heroOffset.x;
+  const heroPosY = heroPos.y+1+heroOffset.y;
+
+  hero.drawImage(ctx, heroPosX, heroPosY);
 }
 
 
