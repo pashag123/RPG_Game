@@ -27,6 +27,7 @@ export class GameLoop {
         // fixed time step updates
         // if theres enough accumulated time to run one or more fixed update 
         while (this.accumulatedTime >= this.timeStep) {
+            console.log("UPDATE!")
             this.update(this.timeStep);
             this.accumulatedTime -= this.timeStep;
         }
@@ -34,7 +35,21 @@ export class GameLoop {
         this.render();
 
 
-        this.rafid = requestAnimationFrame(this.mainloop);
+        this.rafid = requestAnimationFrame(this.mainLoop);
 
+    }
+
+    start() {
+        if (!this.isRunning) {
+            this.isRunning = true;
+            this.rafid = requestAnimationFrame(this.mainLoop);
+        }
+    }
+
+    stop() {
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafid);
+        }
+        this.isRunning = false;
     }
 }
