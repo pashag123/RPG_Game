@@ -35,6 +35,7 @@ const heroPos = new Vector2(16 * 6, 16 * 5);
 
 const update = () => {
   // updating entities in the game
+hero.frame += 1;
 
 };
 

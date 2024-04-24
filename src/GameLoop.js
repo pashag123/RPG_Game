@@ -27,7 +27,7 @@ export class GameLoop {
         // fixed time step updates
         // if theres enough accumulated time to run one or more fixed update 
         while (this.accumulatedTime >= this.timeStep) {
-            console.log("UPDATE!")
+           
             this.update(this.timeStep);
             this.accumulatedTime -= this.timeStep;
         }
