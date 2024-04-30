@@ -27,7 +27,32 @@ export class Input {
             }
 
         })
+
+        document.addEventListener("keyup", (e) => {
+
+            if (e.code === "ArrowUp" || e.code === "keyW") {
+                this.onArrowReleased(UP);
+            }
+
+            if (e.code === "ArrowDown" || e.code === "KeyS") {
+                this.onArrowReleased(DOWN);
+            }
+
+            if (e.code === "ArrowLeft" || e.code === "KeyA") {
+                this.onArrowReleased(LEFT);
+            }
+
+            if (e.code === "ArrowRight" || e.code === "KeyD") {
+                this.onArrowReleased(RIGHT);
+            }
+
+        })
     }
+
+get direction() {
+    return this.heldDirections[0];
+}
+
 
     onArrowPressed(direction) {
         if (this.heldDirections.indexOf(direction) === -1) {
@@ -36,6 +61,11 @@ export class Input {
     }
 
     onArrowReleased(direction) {
+const index = this.heldDirections.indexOf(direction);
+if (index === -1) {
+    return;
+}
 
+this.heldDirections.splice(index, 1);
     }
 }
