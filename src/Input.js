@@ -49,9 +49,9 @@ export class Input {
         })
     }
 
-get direction() {
-    return this.heldDirections[0];
-}
+    get direction() {
+        return this.heldDirections[0];
+    }
 
 
     onArrowPressed(direction) {
@@ -61,11 +61,11 @@ get direction() {
     }
 
     onArrowReleased(direction) {
-const index = this.heldDirections.indexOf(direction);
-if (index === -1) {
-    return;
-}
+        const index = this.heldDirections.indexOf(direction);
+        if (index === -1) {
+            return;
+        }
 
-this.heldDirections.splice(index, 1);
+        this.heldDirections.splice(index, 1);
     }
 }

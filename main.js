@@ -4,7 +4,10 @@ import { Sprite } from "./src/Sprite.js";
 import { Vector2 } from "./src/Vector2.js";
 import { GameLoop } from "./src/GameLoop.js";
 import { Input } from "./src/Input.js"
-
+import { UP } from "./src/Input.js"
+import { DOWN } from "./src/Input.js"
+import { LEFT } from "./src/Input.js"
+import { RIGHT } from "./src/Input.js"
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -37,7 +40,23 @@ const input = new Input();
 
 
 const update = () => {
-console.log(input.direction)
+if (input.direction === DOWN) {
+  heroPos.y += 1;
+  hero.frame = 0;
+}
+if (input.direction === UP) {
+  heroPos.y -= 1;
+  hero.frame = 6;
+}
+if (input.direction === LEFT) {
+  heroPos.x -= 1;
+  hero.frame = 9;
+}
+if (input.direction === RIGHT) {
+  heroPos.x += 1;
+  hero.frame = 3;
+}
+
 
 };
 
