@@ -4,7 +4,7 @@ import { Sprite } from "./src/Sprite.js";
 import { Vector2 } from "./src/Vector2.js";
 import { GameLoop } from "./src/GameLoop.js";
 import {DOWN, LEFT, RIGHT, UP, Input} from "./src/Input.js"
-import { gridCells } from './src/helpers/grid.js';
+import { gridCells, isSpaceFree } from './src/helpers/grid.js';
 import { moveTowards } from './src/helpers/moveTowards.js';
 
 const canvas = document.querySelector("#game-canvas");
@@ -30,9 +30,7 @@ const hero = new Sprite({
 })
 
 
-const heroDestinationPosition = new Vector2(
-  gridCells(10), gridCells(5)
-)
+const heroDestinationPosition = hero.position.duplicate();
 
 
 const shadow = new Sprite({
@@ -48,29 +46,48 @@ const input = new Input();
 const update = () => {
 
 const distance = moveTowards(hero, heroDestinationPosition, 1)
-
-
-return; 
-
-if (input.direction === DOWN) {
-  hero.position.y += 1;
-  hero.frame = 0;
+const hasArrived = distance <= 1;
+if (hasArrived) {
+  tryMove()
 }
-if (input.direction === UP) {
-  hero.position.y -= 1;
-  hero.frame = 6;
-}
-if (input.direction === LEFT) {
-  hero.position.x -= 1;
-  hero.frame = 9;
-}
-if (input.direction === RIGHT) {
-  hero.position.x += 1;
-  hero.frame = 3;
-}
-
 
 };
+
+const tryMove = () => {
+
+if (!input.direction) {
+  return;
+}
+
+let nextX = heroDestinationPosition.x;
+let nextY = heroDestinationPosition.y;
+const gridSize = 16;
+
+
+
+
+  if (input.direction === DOWN) {
+    nextY += gridSize;
+    hero.frame = 0;
+  }
+  if (input.direction === UP) {
+    nextY -= gridSize;
+    hero.frame = 6;
+  }
+  if (input.direction === LEFT) {
+    nextX -= gridSize;
+    hero.frame = 9;
+  }
+  if (input.direction === RIGHT) {
+    nextX += gridSize;
+    hero.frame = 3;
+  }
+  
+heroDestinationPosition.x = nextX;
+heroDestinationPosition.y = nextY;
+
+
+}
 
 
 const draw = () => {
