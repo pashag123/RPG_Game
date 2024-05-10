@@ -3,9 +3,10 @@ import { resources } from "./src/Resource.js"
 import { Sprite } from "./src/Sprite.js";
 import { Vector2 } from "./src/Vector2.js";
 import { GameLoop } from "./src/GameLoop.js";
-import {DOWN, LEFT, RIGHT, UP, Input} from "./src/Input.js"
+import { DOWN, LEFT, RIGHT, UP, Input } from "./src/Input.js"
 import { gridCells, isSpaceFree } from './src/helpers/grid.js';
 import { moveTowards } from './src/helpers/moveTowards.js';
+import { walls } from './src/levels/level1.js';
 
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
@@ -45,23 +46,23 @@ const input = new Input();
 
 const update = () => {
 
-const distance = moveTowards(hero, heroDestinationPosition, 1)
-const hasArrived = distance <= 1;
-if (hasArrived) {
-  tryMove()
-}
+  const distance = moveTowards(hero, heroDestinationPosition, 1)
+  const hasArrived = distance <= 1;
+  if (hasArrived) {
+    tryMove()
+  }
 
 };
 
 const tryMove = () => {
 
-if (!input.direction) {
-  return;
-}
+  if (!input.direction) {
+    return;
+  }
 
-let nextX = heroDestinationPosition.x;
-let nextY = heroDestinationPosition.y;
-const gridSize = 16;
+  let nextX = heroDestinationPosition.x;
+  let nextY = heroDestinationPosition.y;
+  const gridSize = 16;
 
 
 
@@ -82,9 +83,16 @@ const gridSize = 16;
     nextX += gridSize;
     hero.frame = 3;
   }
-  
-heroDestinationPosition.x = nextX;
-heroDestinationPosition.y = nextY;
+
+
+  if (isSpaceFree(walls, nextX, nextY)) {
+
+    heroDestinationPosition.x = nextX;
+    heroDestinationPosition.y = nextY;
+  }
+
+
+
 
 
 }

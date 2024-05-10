@@ -4,5 +4,10 @@ export const gridCells = n => {
 
 
 export const isSpaceFree = (walls, x, y) => {
-    return true;
+
+    const str = `${x},${y}`;
+
+    const isWallPresent = walls.has(str);
+
+    return !isWallPresent;
 }
