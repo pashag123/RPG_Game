@@ -9,6 +9,7 @@ export class Sprite {
         frame,
         scale,
         position,
+        animations,
     }) {
         this.resource = resource;
 
@@ -26,6 +27,8 @@ export class Sprite {
 
         this.position = position ?? new Vector2(0, 0);
 
+        this.animations = animations ?? null;
+
         this.buildFrameMap();
 
     }
@@ -42,11 +45,22 @@ export class Sprite {
             }
         }
     }
+
+
+    step(delta) {
+        if (!this.animations) {
+            return;
+        }
+        this.animations.step(delta);
+        this.frame = this.animations.frame;
+    }
+
+
     drawImage(ctx, x, y) {
         if (!this.resource.isLoaded) {
             return;
         }
-// find the correct sprite sheet frame to use
+        // find the correct sprite sheet frame to use
         let frameCoordX = 0;
         let frameCoordY = 0;
         const frame = this.frameMap.get(this.frame);
