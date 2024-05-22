@@ -1,5 +1,5 @@
 
-const makeStandingFrames = (rootFrame = 0) => {
+const makeStandingFrames = (startingFrame = 0) => {
     return {
         duration: 400,
         frames: [

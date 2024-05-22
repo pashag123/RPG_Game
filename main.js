@@ -7,6 +7,9 @@ import { DOWN, LEFT, RIGHT, UP, Input } from "./src/Input.js"
 import { gridCells, isSpaceFree } from './src/helpers/grid.js';
 import { moveTowards } from './src/helpers/moveTowards.js';
 import { walls } from './src/levels/level1.js';
+import { Animations } from './src/Animations.js';
+import { FrameIndexPattern } from './src/FrameIndexPattern.js';
+import { WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from './src/objects/Hero/heroAnimations.js';
 
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
@@ -27,7 +30,13 @@ const hero = new Sprite({
   hFrames: 3,
   vFrames: 8,
   frame: 1,
-  position: new Vector2(gridCells(6), gridCells(5))
+  position: new Vector2(gridCells(6), gridCells(5)),
+  animations: new Animations({
+    walkUp: new FrameIndexPattern(WALK_UP),
+    walkDown: new FrameIndexPattern(WALK_DOWN),
+    walkLeft: new FrameIndexPattern(WALK_LEFT),
+    walkRight: new FrameIndexPattern(WALK_RIGHT)
+  })
 })
 
 
@@ -44,13 +53,16 @@ const shadow = new Sprite({
 const input = new Input();
 
 
-const update = () => {
+const update = (delta) => {
 
   const distance = moveTowards(hero, heroDestinationPosition, 1)
   const hasArrived = distance <= 1;
   if (hasArrived) {
     tryMove()
   }
+
+
+hero.step(delta);
 
 };
 
