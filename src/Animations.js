@@ -1,5 +1,3 @@
-import { FrameIndexPattern } from "./FrameIndexPattern";
-import { WALK_DOWN } from "./objects/Hero/heroAnimations";
 
 
 export class Animations {
@@ -13,6 +11,17 @@ export class Animations {
 get frame() {
     return this.patterns[this.activeKey].frame;
 }
+
+
+play(key, startAtTime = 0) {
+    if (this.activeKey === key) {
+        return;
+    }
+
+    this.activeKey = key;
+    this.patterns[this.activeKey].currentTime = startAtTime;
+}
+
 
     step(delta) {
         this.patterns[this.activeKey].step(delta);
