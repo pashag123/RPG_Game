@@ -1,14 +1,72 @@
 import { GameObject } from "../../GameObject";
 import { Vector2 } from "../../Vector2";
+import { walls } from "../../levels/level1.js";
+import { DOWN, LEFT, RIGHT, UP} from "../../Input.js"
+import { isSpaceFree } from "../../helpers/grid.js";
+import { Sprite } from "../../Sprite.js";
+import { resources } from "../../Resource.js";
+import { FrameIndexPattern } from "../../FrameIndexPattern.js";
+import { Animations } from "../../Animations.js";
+import { STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from "./heroAnimations.js";
+import { moveTowards } from "../../helpers/moveTowards.js";
+
 
 export class Hero extends GameObject {
     constructor(x, y) {
         super({
             position: new Vector2(x, y)
         });
-this.facingDirection =DOWN;
-this.destinationPosition = this.position.duplicate()
+
+const shadow = new Sprite ({
+  
+    resource: resources.images.shadow,
+    frameSize: new Vector2(32, 32),
+    position: new Vector2(-8, -19)
+  
+});
+
+this.addChild(shadow);
+
+        this.body = new Sprite({
+          resource: resources.images.hero,
+          frameSize: new Vector2(32, 32),
+          hFrames: 3,
+          vFrames: 8,
+          frame: 1,
+          position: new Vector2(-8, -20),
+          animations: new Animations({
+        
+            walkDown: new FrameIndexPattern(WALK_DOWN),
+            walkUp: new FrameIndexPattern(WALK_UP),
+            walkLeft: new FrameIndexPattern(WALK_LEFT),
+            walkRight: new FrameIndexPattern(WALK_RIGHT),
+            standDown: new FrameIndexPattern(STAND_DOWN),
+            standUp: new FrameIndexPattern(STAND_UP),
+            standLeft: new FrameIndexPattern(STAND_LEFT),
+            standRight: new FrameIndexPattern(STAND_RIGHT)
+          })
+        })
+
+        this.addChild(this.body);
+
+
+
+
+this.facingDirection = DOWN;
+this.destinationPosition = this.position.duplicate();
     }
+
+step(delta, root) {
+ 
+  const distance = moveTowards(this, this.destinationPosition, 1)
+  const hasArrived = distance <= 1;
+  if (hasArrived) {
+    this.tryMove(root)
+  }
+
+
+}
+
 
 tryMove (root) {
 
@@ -16,10 +74,10 @@ tryMove (root) {
 
         if (!input.direction) {
       
-          if (this.facingDirection === LEFT) { hero.animations.play("standLeft") };
-          if (this.facingDirection === RIGHT) { hero.animations.play("standRight") };
-          if (this.facingDirection === UP) { hero.animations.play("standUp") };
-          if (this.facingDirection === DOWN) { hero.animations.play("standDown") };
+          if (this.facingDirection === LEFT) { this.body.animations.play("standLeft") };
+          if (this.facingDirection === RIGHT) { this.body.animations.play("standRight") };
+          if (this.facingDirection === UP) { this.body.animations.play("standUp") };
+          if (this.facingDirection === DOWN) { this.body.animations.play("standDown") };
       
       
       
@@ -35,19 +93,19 @@ tryMove (root) {
       
         if (input.direction === DOWN) {
           nextY += gridSize;
-         hero.animations.play("walkDown")
+         this.body.animations.play("walkDown")
         }
         if (input.direction === UP) {
           nextY -= gridSize;
-          hero.animations.play("walkUp")
+          this.body.animations.play("walkUp")
         }
         if (input.direction === LEFT) {
           nextX -= gridSize;
-          hero.animations.play("walkLeft")
+          this.body.animations.play("walkLeft")
         }
         if (input.direction === RIGHT) {
           nextX += gridSize;
-          hero.animations.play("walkRight")
+          this.body.animations.play("walkRight")
         }
       this.facingDirection = input.direction ?? this.facingDirection
        

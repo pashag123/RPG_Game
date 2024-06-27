@@ -1,7 +1,7 @@
 import { Vector2 } from "./Vector2";
 
 export class GameObject {
-    consructor({ position }) {
+    constructor({ position }) {
         this.position = position ?? new Vector2(0, 0);
         this.children = [];
     }
@@ -24,7 +24,7 @@ export class GameObject {
 
     draw(ctx, x, y) {
         const drawPosX = x + this.position.x;
-        const drawPosY = x + this.position.y;
+        const drawPosY = y + this.position.y;
 
         this.drawImage(ctx, drawPosX, drawPosY);
 
@@ -40,7 +40,7 @@ export class GameObject {
         this.children.push(gameObject)
     }
 
-    remoceChild(gameObject) {
+    removeChild(gameObject) {
         this.children = this.children.filter(g => {
             return gameObject !== g;
         })
