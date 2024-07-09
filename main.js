@@ -17,7 +17,7 @@ const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
 
 const mainScene = new GameObject({
-  position: new Vector2(0,0)
+  position: new Vector2(0, 0)
 })
 
 const skySprite = new Sprite({
@@ -48,7 +48,7 @@ mainScene.input = new Input();
 
 
 const update = (delta) => {
-mainScene.stepEntry(delta, mainScene)
+  mainScene.stepEntry(delta, mainScene)
 
 };
 
@@ -57,9 +57,9 @@ mainScene.stepEntry(delta, mainScene)
 const draw = () => {
 
 
-mainScene.draw(ctx, 0, 0); 
+  mainScene.draw(ctx, 0, 0);
 
- 
+
 }
 
 
