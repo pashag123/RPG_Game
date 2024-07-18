@@ -7,7 +7,7 @@ import { Sprite } from "../../Sprite.js";
 import { resources } from "../../Resource.js";
 import { FrameIndexPattern } from "../../FrameIndexPattern.js";
 import { Animations } from "../../Animations.js";
-import { STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from "./heroAnimations.js";
+import { PICK_UP_DOWN, STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from "./heroAnimations.js";
 import { moveTowards } from "../../helpers/moveTowards.js";
 import { events } from "../../Events.js";
 
@@ -44,7 +44,8 @@ export class Hero extends GameObject {
         standDown: new FrameIndexPattern(STAND_DOWN),
         standUp: new FrameIndexPattern(STAND_UP),
         standLeft: new FrameIndexPattern(STAND_LEFT),
-        standRight: new FrameIndexPattern(STAND_RIGHT)
+        standRight: new FrameIndexPattern(STAND_RIGHT),
+        pickUpDown: new FrameIndexPattern(PICK_UP_DOWN),
       })
     })
 
@@ -55,9 +56,15 @@ export class Hero extends GameObject {
 
     this.facingDirection = DOWN;
     this.destinationPosition = this.position.duplicate();
+    this.itemPickupTime = 0;
   }
 
   step(delta, root) {
+
+    if (this.itemPickupTime > 0) {
+      this.workOnItemPickup(delta);
+      return;
+    }
 
     const distance = moveTowards(this, this.destinationPosition, 1)
     const hasArrived = distance <= 1;
@@ -134,6 +141,11 @@ export class Hero extends GameObject {
 
 
 
+  }
+
+  workOnItemPickup(delta) {
+    this.itemPickupTime -= delta;
+    this.body.animations.play("pickUpDown")
   }
 
 }

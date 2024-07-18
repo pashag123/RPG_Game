@@ -14,6 +14,7 @@ import { GameObject } from './src/GameObject.js';
 import { Hero } from './src/objects/Hero/Hero.js';
 import { events } from './src/Events.js';
 import { Camera } from './src/Camera.js';
+import { Rod } from './src/objects/Rod/Rod.js';
 
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
@@ -53,7 +54,8 @@ const camera = new Camera()
 mainScene.addChild(camera);
 
 
-
+const rod = new Rod(gridCells(7), gridCells(6))
+mainScene.addChild(rod);
 
 const update = (delta) => {
   mainScene.stepEntry(delta, mainScene)
