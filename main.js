@@ -12,6 +12,8 @@ import { FrameIndexPattern } from './src/FrameIndexPattern.js';
 import { STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from './src/objects/Hero/heroAnimations.js';
 import { GameObject } from './src/GameObject.js';
 import { Hero } from './src/objects/Hero/Hero.js';
+import { events } from './src/Events.js';
+import { Camera } from './src/Camera.js';
 
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
@@ -25,7 +27,7 @@ const skySprite = new Sprite({
   frameSize: new Vector2(320, 180)
 })
 
-mainScene.addChild(skySprite);
+
 
 const groundSprite = new Sprite({
   resource: resources.images.ground,
@@ -47,6 +49,12 @@ mainScene.addChild(hero)
 mainScene.input = new Input();
 
 
+const camera = new Camera()
+mainScene.addChild(camera);
+
+
+
+
 const update = (delta) => {
   mainScene.stepEntry(delta, mainScene)
 
@@ -56,9 +64,17 @@ const update = (delta) => {
 
 const draw = () => {
 
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  skySprite.drawImage(ctx, 0, 0);
+
+  ctx.save();
+
+  ctx.translate(camera.position.x, camera.position.y);
 
   mainScene.draw(ctx, 0, 0);
 
+  ctx.restore();
 
 }
 
