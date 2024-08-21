@@ -1,3 +1,4 @@
+
 import { GameObject } from "./GameObject";
 import { Vector2 } from "./Vector2";
 
@@ -12,29 +13,18 @@ export class Sprite extends GameObject {
         position,
         animations,
     }) {
-
         super({});
 
         this.resource = resource;
-
         this.frameSize = frameSize ?? new Vector2(16, 16);
-
         this.hFrames = hFrames ?? 1;
-
         this.vFrames = vFrames ?? 1;
-
         this.frame = frame ?? 0;
-
         this.frameMap = new Map();
-
         this.scale = scale ?? 1;
-
         this.position = position ?? new Vector2(0, 0);
-
         this.animations = animations ?? null;
-
         this.buildFrameMap();
-
     }
 
     buildFrameMap() {
@@ -44,12 +34,11 @@ export class Sprite extends GameObject {
                 this.frameMap.set(
                     frameCount,
                     new Vector2(this.frameSize.x * h, this.frameSize.y * v)
-                )
+                );
                 frameCount++;
             }
         }
     }
-
 
     step(delta) {
         if (!this.animations) {
@@ -59,9 +48,9 @@ export class Sprite extends GameObject {
         this.frame = this.animations.frame;
     }
 
-
     drawImage(ctx, x, y) {
-        if (!this.resource.isLoaded) {
+        if (!this.resource || !this.resource.isLoaded) {
+            console.warn("Resource is not available or not loaded", this);
             return;
         }
         // find the correct sprite sheet frame to use
@@ -81,15 +70,11 @@ export class Sprite extends GameObject {
             frameCoordX,
             frameCoordY, // Top Y corner of frame 
             frameSizeX, // How much to crop from the sprite sheet (x)
-            frameSizeY, //  How much to crop from the sprite sheet (y)
+            frameSizeY, // How much to crop from the sprite sheet (y)
             x, // where to place this on canvas tag X (0)
             y, // where to place this on canvas tag Y (0)
             frameSizeX * this.scale, // How large to scale it (X)
             frameSizeY * this.scale, // How large to scale it (Y)
-
         );
-
-
     }
 }
-

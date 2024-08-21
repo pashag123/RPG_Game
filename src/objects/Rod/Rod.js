@@ -1,3 +1,5 @@
+
+
 import { events } from "../../Events";
 import { GameObject } from "../../GameObject";
 import { resources } from "../../Resource";
@@ -12,31 +14,31 @@ export class Rod extends GameObject {
         const sprite = new Sprite({
             resource: resources.images.rod,
             position: new Vector2(0, -5)
-        })
-
-
+        });
         this.addChild(sprite);
 
-        events.on("HERO_POSITION", this, pos => {
-           
-            const roundedHeroX = Math.round(pos.x);
-            const roundedHeroY = Math.round(pos.y);
-            if (roundedHeroX === this.position.x && roundedHeroY === this.position.y) {
-               this.onCollideWithHero();
-            }
-        })
-
-
+        
     }
 
-onCollideWithHero() {
-this.destroy(); 
-
-events.emit("HERO_PICKS_UP_ITEM", {
-    IMAGE: resources.images.rod,
-    position: this.position
-})
+ready() {
+    console.log("ROD IS READY")
+    events.on("HERO_POSITION", this, pos => {
+        console.log("HERO POSITION")
+        const roundedHeroX = Math.round(pos.x);
+        const roundedHeroY = Math.round(pos.y);
+        if (roundedHeroX === this.position.x && roundedHeroY === this.position.y) {
+            this.onCollideWithHero();
+        }
+    });
+ 
 }
 
 
+    onCollideWithHero() {
+        this.destroy(); 
+        events.emit("HERO_PICKS_UP_ITEM", {
+            IMAGE: resources.images.rod,
+            position: this.position
+        });
+    }
 }
